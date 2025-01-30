@@ -160,6 +160,9 @@
                     break;
                     
                 }   
+                if(endBlk2 > endBlk){
+                    endBlk2 = endBlk;
+                }
                 lastBlkTo = endBlk2;
                 console.log("Getting transfer logs from blk: ", startBlk2," to blk: ",endBlk2);
                 await getTransferLogs(startBlk2, endBlk2);
