@@ -1,6 +1,94 @@
 {
-  "lastBlkTo": 1,
+  "lastBlkTo": 21415662,
   "holders": {
+    "0x7132c9f36abe62eab74cdfdd08c154c9ae45691b": {
+      "balance": "8484.42610817",
+      "balance0xBTC": "10096.08203551"
+    },
+    "0x1d00ffffb205cc0c5a51e7c77a7668a8b90bbb90": {
+      "balance": "449.08634389",
+      "balance0xBTC": "534.39048252"
+    },
+    "0xbe381052b68f458183d1599d672860d6b3aaa644": {
+      "balance": "86.307691",
+      "balance0xBTC": "102.70032902"
+    },
+    "0xdec5190d59ed370aeed30341dcda3a2b8888e9c2": {
+      "balance": "4019.10982654",
+      "balance0xBTC": "4782.55737927"
+    },
+    "0x6a42fc9cb17c5034e9293e0ad960c7592de3f580": {
+      "balance": "2189.45718089",
+      "balance0xBTC": "2605.35493676"
+    },
+    "0xaad92392e4c7734e0843921a9bd33a952df8c3b5": {
+      "balance": "12.94721818",
+      "balance0xBTC": "15.40546554"
+    },
+    "0x1b631db2e844c99559f187e17e3c7a16a56be161": {
+      "balance": "3631.1531083",
+      "balance0xBTC": "4320.90741387"
+    },
+    "0xdf97638d71d49a48b81394f5a9409a0241339ec4": {
+      "balance": "1294.72186839",
+      "balance0xBTC": "1540.65892765"
+    },
+    "0xd3da00e32e4f93b2d8579ab9a160dbab8717d2e6": {
+      "balance": "302.0996131",
+      "balance0xBTC": "359.48444721"
+    },
+    "0x82dd6d3a2a0790bab2348a3b3cbc1842ef704ef6": {
+      "balance": "3097.97452398",
+      "balance0xBTC": "3686.44903699"
+    },
+    "0xd994ad9764781747ce07f27300161d9086d8488a": {
+      "balance": "980.27517271",
+      "balance0xBTC": "1166.48278966"
+    },
+    "0xc391e5aed6881e12bbd990eb6059fb17cfd09383": {
+      "balance": "43763.13000919",
+      "balance0xBTC": "52076.14213585"
+    },
+    "0x9c88335b6d34db051ed5748bda10efb22732f16c": {
+      "balance": "13.51406809",
+      "balance0xBTC": "16.07970178"
+    },
+    "0x4298e663517593284ad4fe199b21815bd48a9969": {
+      "balance": "624.35300708",
+      "balance0xBTC": "742.95006219"
+    },
+    "0x257d13eb0651843fbfd880754794f50ceaf4ce0c": {
+      "balance": "10882.27831183",
+      "balance0xBTC": "12949.41856185"
+    },
+    "0xb835367ae1cafcea58a10a51b17fea25d16c3dab": {
+      "balance": "253.07273878",
+      "balance0xBTC": "301.14428421"
+    },
+    "0x41fec248777efa4bdba27108cef74da24b74a4bb": {
+      "balance": "11762.19558224",
+      "balance0xBTC": "13996.48038009"
+    },
+    "0x794a0d6815072dedfb80fc849f56e33edea30755": {
+      "balance": "842.06465285",
+      "balance0xBTC": "1002.01701109"
+    },
+    "0x25c13c0f5c957a7c50966de8141b4cd86627dd39": {
+      "balance": "100.0",
+      "balance0xBTC": "118.99437134"
+    },
+    "0x7cabb2af9f6e120e1207ec97992964e6b9777e7c": {
+      "balance": "37044.71520019",
+      "balance0xBTC": "44081.53374415"
+    },
+    "0x8da64494d7c5d9972be1375b10095a60db8bd914": {
+      "balance": "44325.21456178",
+      "balance0xBTC": "52744.99904651"
+    },
+    "0xbf3be9560c2cf30e16c5a9b7ff3245f6ae57f42b": {
+      "balance": "498.31718927",
+      "balance0xBTC": "592.97411972"
+    },
     "0x7e41cb2eca64793532d6730b38d10575fd62b37f": {
       "balance": "222.17246044",
       "balance0xBTC": "264.37343776"
