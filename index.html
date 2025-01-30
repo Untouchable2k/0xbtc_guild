@@ -280,10 +280,7 @@
 
                 updateHoldersDisplay();
                 // Display the Map contents
-                console.log('All holders with non-zero balances:');
-                nonZeroHolders.forEach((balance, address) => {
-                    console.log(`Address: ${address}, Balance: ${balance} ETH`);
-                });
+                
 
         }
 
@@ -301,7 +298,6 @@
 
                     // Extracting the addresses from the 'holders' object
                     console.log('nonZeroHolders:', nonZeroHolders);
-                    console.log('nonZeroHolders.holders:', nonZeroHolders?.holders);
 
                     // Or using for...of
                     for (const [address, data] of nonZeroHolders) {
