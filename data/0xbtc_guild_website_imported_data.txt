@@ -1,0 +1,7 @@
+{
+  "startBlk": 0,
+  "Holders": [
+    "0xB6eD7644C69416d67B522e20bC294A9a9B405B31",
+    "0xB6eD7644C69416d67B522e20bC294A9a9B405B31"
+  ]
+}
