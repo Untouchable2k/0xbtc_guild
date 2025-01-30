@@ -1,5 +1,5 @@
 {
-  "lastBlkTo": 21368023,
+  "lastBlkTo": 1,
   "holders": {
     "0x7e41cb2eca64793532d6730b38d10575fd62b37f": {
       "balance": "222.17246044",
