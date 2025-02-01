@@ -314,7 +314,15 @@
                     
                     while (retries <= maxRetries) {
                         try {
-                            await sleep(retries === 0 ? 2 : 90); // Sleep 2ms first try, 90s on retry
+                            await sleep(2); // Sleep 2ms first try, 90s on retry
+                            if(retries != 0){
+                                for(var zzz = 0; zzz<45; zzz++){
+                                    if(interuptererer == 99){
+                                        break;
+                                    }
+                                    await sleep(2);
+                                }
+                            }
                             const userBalance = await contractGuild.balanceOf(recipient);
                             console.log("Final check of User: ",recipient, " and MinersGuildBalance of: ",ethers.utils.formatUnits(userBalance, 8) )
                             if (userBalance.gt(0)) {
