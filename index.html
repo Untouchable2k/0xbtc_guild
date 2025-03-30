@@ -31,7 +31,7 @@
             <label for="rpcUrl">Enter your RPC URL :</label>
             <input type="url" id="rpcUrl" name="rpcUrl" 
                    placeholder="https://example.com/rpc"
-                   value="https://rpc.ankr.com/eth">
+                   value="https://eth.llamarpc.com">
         </div>
         
         <div>
@@ -89,7 +89,7 @@
             }
         }
         var recipients = new Set();
-        const providerURL = `https://rpc.ankr.com/eth`;
+        const providerURL = `https://eth.llamarpc.com`;
         var provider = new ethers.providers.JsonRpcProvider(providerURL);
         
         // Transfer event parameters
