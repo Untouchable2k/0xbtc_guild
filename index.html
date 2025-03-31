@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guild Holders</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+          max-width: 400px;
+          margin: 20px auto;
+          padding: 0 15px;
+        }
+        
+        .tbalanceChecker {
+          text-align: center;
+          color: #333;
+          margin-bottom: 20px;
+          border-bottom: 2px solid #4a90e2;
+          padding-bottom: 10px;
+        }
+        
+        .connectButton {
+          background-color: #4a90e2;
+          color: white;
+          border: none;
+          padding: 8px 15px;
+          border-radius: 8px;
+          cursor: pointer;
+          width: 100%;
+          font-size: 22px;
+          margin-bottom: 15px;
+        }
+        
+        .connect-button:hover {
+          background-color: #3a7bc8;
+        }
+        
+        .account-info {
+          background-color: #f5f5f5;
+          padding: 10px;
+          border-radius: 4px;
+          margin-bottom: 15px;
+          word-break: break-all;
+          font-size: 14px;
+        }
+        
+        .balance-container {
+          margin-top: 20px;
+        }
+        
+        .balance-item {
+          display: flex;
+          justify-content: space-between;
+          padding: 12px 10px;
+          border-bottom: 1px solid #eee;
+        }
+        
+        .balance-name {
+          font-weight: bold;
+          color: #555;
+        }
+        
+        .tokenBalance {
+          font-family: monospace;
+          font-size: 16px;
+          color: #4a90e2;
+        }
+        .a0xBTCtokenBalance {
+          font-family: monospace;
+          font-size: 16px;
+          color: #4a90e2;
+        }
+        .Users0xBTCtokenBalance {
+          font-family: monospace;
+          font-size: 16px;
+          color: #4a90e2;
+        }
+        .balance-value {
+          font-family: monospace;
+          font-size: 16px;
+          color: #4a90e2;
+        }
+
+
+
+
+
+
+
+
+        
+        .input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .token-input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            padding-right: 76px;
+        }
+        
+        .token-input2 {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            padding-right: 76px;
+        }
+        
+        .token-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+        .token-input2:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+        
+        .max-button {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+        
+        .max-button:hover {
+            background-color: #4f46e5;
+        }
+        
+      </style>
+</head>
+<body>
+    <h2>Guild Holders</h2>
+    <h2><div class="LoadingInfo" id="LoadingInfo">0% Loaded to get Current Guild Holders</div></h2>
+    <!-- Added a table to display the Map values -->
+    <div id="holdersTable">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Address</th>
+                    <th>Balance</th>
+                    <th>Balance in 0xBTC</th>
+
+                </tr>
+            </thead>
+            <tbody id="holdersData">
+                <!-- Data will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+    
+    <br></br>
+
+    
+  <h1 class="tbalanceChecker">Token Balance Checker</h1>
+  
+  <button class="connectButton" id="connectButton">Connect to MetaMask or Refresh Stats</button>
+  
+  <div class="account-info">
+    <strong>Connected Account:</strong><br>
+    User Account Not Connected
+  </div>
+  
+  <div class="balance-container">
+    <h1> Withdraw from MinersGuild</h1>
+    <div class="balance-item">
+      <span class="balance-name">MinersGuild 0xBTC Balance:</span>
+      <span class="a0xBTCtokenBalance" id="a0xBTCtokenBalance">User Account Not Connected</span>
+    </div>
+    
+    <div class="balance-item">
+        <span class="balance-name">MinersGuild Balance:</span>
+        <span class="tokenBalance" id="tokenBalance">User Account Not Connected</span>
+      </div>
+
+      <div class="input-container">
+          <input type="text" class="token-input2" id="token-amount-usersGuild" placeholder="0.00" inputmode="decimal">
+          <button class="max-button" id="max-button-usersGuild">MAX</button>
+      </div>
+      
+
+      <button 
+    onclick="unstakeTokens()" 
+    style="
+        background-color: #FF8C00; 
+        color: white; 
+        padding: 15px 30px; 
+        font-size: 18px; 
+        border: none; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    "
+    onmouseover="this.style.backgroundColor='#FF7000'"
+    onmouseout="this.style.backgroundColor='#FF8C00'"
+>
+    Withdraw 0xBTC from MinersGuild
+</button>
+
+<br></br>
+    <h1> Deposit into MinersGuild</h1>
+    <div class="balance-item">
+      <span class="balance-name">Users 0xBTC Balance:</span>
+      <span class="Users0xBTCtokenBalance" id="Users0xBTCtokenBalance">User Account Not Connected</span>
+    </div>
+    <div class="input-container">
+      <input type="text" class="token-input" id="token-amount" placeholder="0.00" inputmode="decimal">
+      <button class="max-button" id="max-button">MAX</button>
+  </div>
+
+
+  <button 
+  id="deposit0xBTCButton"
+  style="
+      background-color: #FF8C00; 
+      color: white; 
+      padding: 15px 30px; 
+      font-size: 18px; 
+      border: none; 
+      border-radius: 8px; 
+      cursor: pointer; 
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+  "
+  onmouseover="this.style.backgroundColor='#FF7000'"
+  onmouseout="this.style.backgroundColor='#FF8C00'"
+>
+  Deposit 0xBTC into MinersGuild
+</button>
+
+      <br></br>
+  <button class="connectButton" id="connectButton2">Connect to MetaMask or Refresh Stats</button>
+  
+  </div>
+
+
+
+
+	<br></br>
+    <h1> Advanced Inputs</h1>
+    <form>
+        <div>
+            <label for="rpcUrl">Enter your RPC URL :</label>
+            <input type="url" id="rpcUrl" name="rpcUrl" 
+                   placeholder="https://example.com/rpc"
+                   value="https://eth.llamarpc.com">
+        </div>
+        
+        <div>
+            <label for="backupUrl">Enter Backup Data URL:</label>
+            <textarea id="backupUrl" name="backupUrl" rows="4" cols="80" placeholder="https://example.com/backup">
+                https://raw.githubusercontent.com/Untouchable2k/0xbtc_guild/main/data/0xbtc_guild_website_imported_data.txt
+            </textarea>
+        </div>
+        <button type="button"  onclick="myOnClickFunction()">Submit</button>
+    </form>
+    <h2>Download & Upload Logs - Advanced Users</h2>
+    <button id="downloadButton" type="button"  onclick="downloadHolders()" disabled>Download Holders</button><br>
+    <!-- Input to upload the .txt file -->
+     Upload your current file.
+    <input type="file" id="fileInput" onchange="uploadHolders(event)" />
+    <br></br>
+   
+    <a href="https://chainlist.org/chain/1">Ethereum RPC Proivders</a>
+    
+    <div id="results"></div>
+    <br></br>
+    <br></br>
+    <br></br>
+    <button id="websiteCache" type="button"  onclick="resetWebsiteCache()">Reset Website Cache</button><br>
+    <script>
+    // On page load, check if saved values exist in localStorage and set them in the form
+
+
+        lastBlkTo = 12245663;
+        interuptererer = 100;
+        backupUrlValue22 = "https://raw.githubusercontent.com/Untouchable2k/0xbtc_guild/main/data/0xbtc_guild_website_imported_data.txt";
+        async function myOnClickFunction() {
+            // Your custom JavaScript code here
+            if(rpcUrl.value != providerURL){
+
+                alert("changing RPC");
+
+                const provider = new ethers.providers.JsonRpcProvider(rpcUrl.value);
+
+                await saveDataToWebsite();
+            }
+            
+            const backupUrlValue = document.getElementById("backupUrl").value.trim();
+            console.log("Testing: ", backupUrlValue);
+            if(backupUrlValue !== "https://raw.githubusercontent.com/Untouchable2k/0xbtc_guild/main/data/0xbtc_guild_website_imported_data.txt" || backupUrlValue22 !== backupUrlValue){
+                interuptererer = 99;
+                backupUrlValue22 = backupUrlValue;
+
+                document.getElementById("backupUrl").value = backupUrlValue;
+                alert("wait 25 seconds after changing backupURL");
+                await sleep(25);
+                await loadDataFromURL(1);
+                console.log("WWWWW@!");
+                interuptererer = 100;
+                getAllLogs(lastBlkTo);
+
+            }
+        }
+        var recipients = new Set();
+        const providerURL = `https://eth.llamarpc.com`;
+        var provider = new ethers.providers.JsonRpcProvider(providerURL);
+        
+        // Transfer event parameters
+        const contractAddress = '0x657223e3FDF539d92c40664Db340097D5D6Bd9f5';
+        const transferTopic = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
+
+        async function getTransferLogs(startBlk, endBlk) {
+            try {
+                // Create filter parameters
+                const filter = {
+                    address: contractAddress,
+                    topics: [transferTopic],
+                    fromBlock: startBlk,
+                    toBlock: endBlk
+                };
+
+                // Get logs from Infura
+                const logs = await provider.getLogs(filter);
+                
+                // Process logs to extract recipient addresses
+                logs.forEach(log => {
+                    // The 'to' address is in the third topic (index 2)
+                    // Remove '0x' and pad to 64 characters
+                    const recipient = '0x' + log.topics[2].slice(26);
+                    recipients.add(recipient);
+                });
+
+                // Display results
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '<h3>Unique Recipients:</h3>';
+                recipients.forEach(recipient => {
+                    resultsDiv.innerHTML += `<div>${recipient}</div>`;
+                });
+                
+                console.log(`Found ${recipients.size} unique recipients`);
+            } catch (error) {
+                console.error('Error fetching logs:', error);
+                console.log("sleep 90 sec try again");
+
+                document.getElementById('results').innerHTML = `Error: ${error.message}`;
+                for(var x = 0; x<40; x++){
+
+                    if(interuptererer == 100){
+                        await sleep(2);
+                    }
+                }
+                document.getElementById('results').innerHTML = `Error: ${error.message}`;
+
+                if(interuptererer == 100){
+                    await getTransferLogs(startBlk, endBlk);
+                }
+            }
+        }
+
+        function sleep(seconds) {
+            return new Promise(resolve => setTimeout(resolve, seconds * 1000));
+        }
+        
+const LoadingInfoElement = document.getElementById('LoadingInfo');
+
+
+        async function getAllLogs(startBlk){
+            backupUrlValue22 = rpcUrl.value;
+            provider = new ethers.providers.JsonRpcProvider(rpcUrl.value);
+            endBlk = await provider.getBlockNumber();
+            endBlk2 = startBlk + 9999;
+            startBlk2 = startBlk;
+            var realStart = startBlk2;
+            var realEnd = endBlk;
+            runs = 0;
+            while (true && interuptererer == 100) {
+                
+                //accountAddressElement2.innerHTML = `1% Loaded to get Current Guild Holders`;
+                var percentage = 1.0*(endBlk2 - realStart) / (realEnd - realStart) / 100
+                LoadingInfoElement.innerHTML = `${percentage}% Loaded to get Current Guild Holders`;
+                if(startBlk2 - endBlk > 0){
+                    break;
+                    
+                }   
+                if(endBlk2 > endBlk){
+                    endBlk2 = endBlk;
+                }
+                lastBlkTo = endBlk2;
+                console.log("Getting transfer logs from blk: ", startBlk2," to blk: ",endBlk2);
+                await getTransferLogs(startBlk2, endBlk2);
+                await sleep(2);
+                startBlk2 = endBlk2 + 1;
+                endBlk2 = startBlk2 + 9999;
+                if(runs%20==0){
+                    console.log("20th run checking and saving");
+                    await checkAllReceiptsForBalance();
+                    await saveDataToWebsite();
+
+                    recipients = new Set();
+                }
+                runs = runs + 1;
+            }
+
+            LoadingInfoElement.innerHTML = `100% Loaded to get Current Guild Holders, double checking balances now`;
+            await checkAllReceiptsForBalance();
+            console.log("Checking everything balance");
+            await checkEverythingsLeft_Balance();
+            console.log("checked everythign balance!");
+            await saveDataToWebsite();
+            LoadingInfoElement.innerHTML = `100% Loaded to get Current Guild Holders, all data current`;
+
+            const downloadButton = document.getElementById('downloadButton');
+            downloadButton.disabled = false; // Enable the button
+        }
+
+        nonZeroHolders = new Map(); // Use a Map to store addresses with their balances
+
+
+        function updateHoldersDisplay() {
+            var bal0xbtctotal = 0;
+            var balminerguildstotal = 0;
+            const tbody = document.getElementById('holdersData');
+            tbody.innerHTML = ''; 
+            
+            // Convert Map to array, sort it, then create the rows
+            const sortedHolders = Array.from(nonZeroHolders.entries())
+                .sort((a, b) => parseFloat(b[1].balance) - parseFloat(a[1].balance));
+            
+            sortedHolders.forEach(([address, balance]) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${address}</td>
+                    <td>${balance.balance} MinersGuild</td>
+                    <td>${balance.balance0xBTC} 0xBTC</td>
+                `;
+                balminerguildstotal = parseFloat(balance.balance) + parseFloat(balminerguildstotal);
+                bal0xbtctotal = parseFloat(balance.balance0xBTC) + parseFloat(bal0xbtctotal);
+                tbody.appendChild(row);
+            });
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                    <td><h1>Total: </h1></td>
+                    <td>${balminerguildstotal} MinersGuild</td>
+                    <td>${bal0xbtctotal} 0xBTC</td>
+                `;
+                tbody.appendChild(row);
+        }
+
+
+        var RatioOF100000000000= 0;
+        async function checkAllReceiptsForBalance() {
+                const abi = [
+                    "function balanceOf(address owner) view returns (uint256)",
+
+                    "function _vaultOutputAmount(uint256 reserveTokenAmount, address currencyToClaim) public view returns (uint)" // _vaultOutputAmount function
+                    ];
+
+                    const contractGuildFinal = new ethers.Contract("0x167152A46E8616D4a6892A6AfD8E52F060151C70", abi, provider);
+                    const contractGuild = new ethers.Contract("0x657223e3FDF539d92c40664Db340097D5D6Bd9f5", abi, provider);
+
+
+                    for (const recipient of recipients) {
+                    if(interuptererer != 100){
+                        break;
+                    }
+                    let retries = 0;
+                    const maxRetries = 10;
+                    
+                    while (retries <= maxRetries) {
+                        try {
+                            await sleep(retries === 0 ? 2 : 90); // Sleep 2ms first try, 90s on retry
+                            const userBalance = await contractGuild.balanceOf(recipient);
+                            
+                            if (userBalance.gt(0)) {
+                                await sleep(3);
+                                var userBalance0xBTC = await contractGuildFinal._vaultOutputAmount(userBalance, "0xB6eD7644C69416d67B522e20bC294A9a9B405B31");
+                    
+                               
+                                const userBalanceFormatted = ethers.utils.formatUnits(userBalance, 8);
+                                const userBalance0xBTCFormatted = ethers.utils.formatUnits(userBalance0xBTC, 8);
+                                // Set both balances as properties in an object
+                                nonZeroHolders.set(recipient, {
+                                    balance: userBalanceFormatted.toString(),
+                                    balance0xBTC: userBalance0xBTCFormatted.toString()
+                                });
+                                updateHoldersDisplay();
+                            }
+                            break; // Success - exit the while loop
+                            
+                        } catch (error) {
+                            console.error(`Error fetching balance for ${recipient}:`, error);
+                            if (retries === maxRetries) {
+                                console.error(`Failed after ${maxRetries + 1} attempts`);
+                                break;
+                            }
+                            console.log("Sleep 90 seconds trying again");
+                            retries++;
+                        }
+                    }
+                    
+
+                }
+
+                updateHoldersDisplay();
+                // Display the Map contents
+                
+
+        }
+
+
+
+        async function checkEverythingsLeft_Balance() {
+                const abi = [
+                    "function balanceOf(address owner) view returns (uint256)",
+
+                    "function _vaultOutputAmount(uint256 reserveTokenAmount, address currencyToClaim) public view returns (uint)" // _vaultOutputAmount function
+                    ];
+
+                    const contractGuildFinal = new ethers.Contract("0x167152A46E8616D4a6892A6AfD8E52F060151C70", abi, provider);
+                    const contractGuild = new ethers.Contract("0x657223e3FDF539d92c40664Db340097D5D6Bd9f5", abi, provider);
+
+                    // Extracting the addresses from the 'holders' object
+                    console.log('nonZeroHolders:', nonZeroHolders);
+
+                    // Or using for...of
+                    for (const [address, data] of nonZeroHolders) {
+                        console.log('Address:', address);
+                        console.log('Data:', data);
+                    }
+
+                    for (const [recipient, data] of nonZeroHolders) {
+                    if(interuptererer != 100){
+                        break;
+                    }
+                    let retries = 0;
+                    const maxRetries = 10;
+                    
+                    while (retries <= maxRetries) {
+                        try {
+                            await sleep(2); // Sleep 2ms first try, 90s on retry
+                            if(retries != 0){
+                                for(var zzz = 0; zzz<45; zzz++){
+                                    if(interuptererer == 99){
+                                        break;
+                                    }
+                                    await sleep(2);
+                                }
+                            }
+                            const userBalance = await contractGuild.balanceOf(recipient);
+                            console.log("Final check of User: ",recipient, " and MinersGuildBalance of: ",ethers.utils.formatUnits(userBalance, 8) )
+                            if (userBalance.gt(0)) {
+                                await sleep(3);
+                                var userBalance0xBTC = await contractGuildFinal._vaultOutputAmount(userBalance, "0xB6eD7644C69416d67B522e20bC294A9a9B405B31");
+                    
+                                console.log("2Final check of User: ",recipient, " and 0xBitcoin Balance of: ",ethers.utils.formatUnits(userBalance0xBTC, 8) )
+                               
+                                const userBalanceFormatted = ethers.utils.formatUnits(userBalance, 8);
+                                const userBalance0xBTCFormatted = ethers.utils.formatUnits(userBalance0xBTC, 8);
+                                // Set both balances as properties in an object
+                                nonZeroHolders.set(recipient, {
+                                    balance: userBalanceFormatted.toString(),
+                                    balance0xBTC: userBalance0xBTCFormatted.toString()
+                                });
+                                updateHoldersDisplay();
+                            }
+                            break; // Success - exit the while loop
+                            
+                        } catch (error) {
+                            console.error(`Error fetching balance for ${recipient}:`, error);
+                            if (retries === maxRetries) {
+                                console.error(`Failed after ${maxRetries + 1} attempts`);
+                                break;
+                            }
+                            console.log("Sleep 90 seconds trying again");
+                            retries++;
+                        }
+                    }
+                    
+
+                }
+
+                updateHoldersDisplay();
+                // Display the Map contents
+                console.log('All holders with non-zero balances:');
+                nonZeroHolders.forEach((balance, address) => {
+                    console.log(`Address: ${address}, Balance: ${balance} ETH`);
+                });
+
+        }
+
+
+        async function saveDataToWebsite() {
+            console.log("Saving to website block: ", lastBlkTo);
+            console.log("Saving users to website: ", nonZeroHolders );
+
+            // Convert Map to a plain object and store in localStorage
+            const holdersObject = Object.fromEntries(nonZeroHolders);
+            const dataToSave = {
+                lastBlkTo: lastBlkTo,
+                holders: holdersObject
+            };
+
+            localStorage.setItem("nonZeroHolders_Guild", JSON.stringify(dataToSave));
+            console.log("Data saved to website cache!");
+
+            const rpcUrlValue = document.getElementById("rpcUrl").value;
+            const backupUrlValue = document.getElementById("backupUrl").value;
+
+            // Save values to localStorage
+            localStorage.setItem("rpcUrl_guild", rpcUrlValue);
+            localStorage.setItem("backupUrl_guild", backupUrlValue);
+
+            // You can add additional logic here (e.g., perform API calls, validations, etc.)
+            
+        }
+
+
+        
+        async function resetWebsiteCache() {
+
+            localStorage.removeItem("nonZeroHolders_Guild");
+            alert("reset local storage cache!");
+        }
+        async function loadDataFromWebsite() {
+            const savedData = localStorage.getItem("nonZeroHolders_Guild");
+
+            if (savedData) {
+                const parsedData = JSON.parse(savedData);
+                console.log("Loaded data3:", parsedData);
+
+                // Convert back to Map
+                nonZeroHolders = new Map(Object.entries(parsedData.holders));
+                lastBlkTo = parsedData.lastBlkTo;
+            } else {
+                console.log("No cached data found.");
+            }
+
+            await loadDataFromURL(lastBlkTo);
+            getAllLogs(lastBlkTo);
+        }
+
+        async function downloadHolders(){
+            console.log("Saving data to .txt file...");
+            
+            // Convert Map to a plain object and prepare data to save
+            const holdersObject = Object.fromEntries(nonZeroHolders);
+            const dataToSave = {
+                lastBlkTo: lastBlkTo,
+                holders: holdersObject
+            };
+
+            // Convert the data to a JSON string
+            const jsonString = JSON.stringify(dataToSave, null, 2); // 'null, 2' makes it pretty printed
+
+            // Create a blob from the JSON string
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            
+            // Create a link to download the blob as a file
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'data.txt'; // specify the file name
+            link.click();
+
+            console.log("Data saved to .txt file!");
+        }
+        
+
+        async function uploadHolders(event){
+            const file = event.target.files[0]; // Get the uploaded file
+            
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = async function(e) {
+                    const fileContent = e.target.result; // The content of the file (JSON string)
+                    
+                    try {
+                        // Parse the JSON content
+                        interuptererer = 99;
+                        alert("must wait 30 seconds for upload to work")
+                        await sleep(30);
+                        const parsedData = JSON.parse(fileContent);
+                        console.log("Loaded data1:", parsedData);
+
+                        // Convert the loaded data back to a Map
+                        nonZeroHolders = new Map(Object.entries(parsedData.holders));
+                        lastBlkTo = parsedData.lastBlkTo;
+
+                        console.log("Data successfully loaded from the file.");
+
+                        getAllLogs(lastBlkTo);
+                    } catch (error) {
+                        console.error("Error parsing the uploaded file:", error);
+                    }
+                };
+
+                // Read the file as a text
+                reader.readAsText(file);
+            }
+        }
+
+
+
+        
+// ABI for ERC20 Token - we only need the balanceOf function
+const tokenABI = [
+    {
+        "constant": true,
+        "inputs": [{"name": "owner", "type": "address"}],
+        "name": "balanceOf",
+        "outputs": [{"name": "", "type": "uint256"}],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "decimals",
+        "outputs": [{"name": "", "type": "uint8"}],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    }
+];
+
+
+
+// DOM Elements
+const connectButton = document.getElementById('connectButton');
+const connectButton2 = document.getElementById('connectButton2');
+const tokenBalanceElement = document.getElementById('tokenBalance');
+// First, select the div element that contains the account info
+const accountAddressElement2 = document.querySelector('.account-info');
+
+const z0xBTCtokenBalance = document.getElementById('a0xBTCtokenBalance');
+const Usersz0xBTCtokenBalance = document.getElementById('Users0xBTCtokenBalance');
+
+// State variables
+let provider_user;
+let signer;
+let userAddress;
+
+let users0xBTCamount;
+let usersGUILD0xBTCamount;
+let minersguildbalance;
+// Connect to MetaMask
+async function connectToMetaMask() {
+    try {
+        // Check if MetaMask is installed
+        if (typeof window.ethereum === 'undefined') {
+            alert('MetaMask is not installed. Please install MetaMask to use this feature.');
+            return;
+        }
+
+        // Request account access
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        userAddress = accounts[0];
+
+        // Update the content of the element
+        accountAddressElement2.innerHTML = `
+        <strong>Connected Account:</strong><br>
+        ${userAddress || "User Account Not Connected"}
+        `;
+
+        // Create ethers provider and signer
+        provider_user = new ethers.providers.Web3Provider(window.ethereum);
+        signer = provider_user.getSigner();
+
+        // Get token balance after connecting
+        minersguildbalance = await getTokenBalance(contractAddress);
+        await sleep(2);
+        users0xBTCamount = await get0xBTCTokenBalance('0xB6eD7644C69416d67B522e20bC294A9a9B405B31');
+        await sleep(2);
+        usersGUILD0xBTCamount = await get0xBTCGuildBalance(minersguildbalance);
+        await sleep(2);
+
+        // Listen for account changes
+        window.ethereum.on('accountsChanged', handleAccountChange);
+    } catch (error) {
+        console.error('Error connecting to MetaMask:', error);
+        alert('Failed to connect to MetaMask: ' + error.message);
+    }
+}
+deposit0xBTCButton.addEventListener('click', approveAndCall);
+
+
+const tokenInput = document.getElementById('token-amount');
+const maxButtonUsers0xBTC = document.getElementById('max-button');
+
+            
+            // Max button functionality
+            maxButtonUsers0xBTC.addEventListener('click', function() {
+                
+                    // Format balance with decimals
+                    const formattedBalance = ethers.utils.formatUnits(users0xBTCamount, 8);
+                    
+                    tokenInput.value = formattedBalance;
+            });
+
+const tokenInput2 = document.getElementById('token-amount-usersGuild');
+const maxButtonUsersGUILD = document.getElementById('max-button-usersGuild');
+ 
+            // Max button functionality
+            maxButtonUsersGUILD.addEventListener('click', function() {
+                
+                // Format balance with decimals
+                const formattedBalance = ethers.utils.formatUnits(minersguildbalance, 8);
+                
+                tokenInput2.value = formattedBalance;
+        });
+
+async function approveAndCall() {
+    try {
+        if (!window.ethereum) {
+            alert('MetaMask is not installed. Please install it first.');
+            return;
+        }
+        var testing112vvf= tokenInput.value;
+        // Contract address and ABI
+        const contractAddress2 = "0xB6eD7644C69416d67B522e20bC294A9a9B405B31";
+        const abi = [
+            "function approveAndCall(address spender, uint256 tokens, bytes data) public returns (bool success)"
+        ];
+        const reserveTokenAmount = ethers.utils.parseUnits(testing112vvf, 8); // Example: 50 tokens (adjust decimals)
+        spender = "0x167152A46E8616D4a6892A6AfD8E52F060151C70";
+        // Create contract instance
+        const contract = new ethers.Contract(contractAddress2, abi, signer);
+
+        // Call the approveAndCall function
+        const tx = await contract.approveAndCall(spender, reserveTokenAmount, '0x');
+        
+        console.log('Transaction sent:', tx.hash);
+        await tx.wait();
+        console.log('Transaction confirmed:', tx.hash);
+        alert('Transaction confirmed, staked 0xBTC successfully!');
+        
+        await sleep(2);
+                    minersguildbalance = await getTokenBalance(contractAddress);
+                    await sleep(2);
+                    users0xBTCamount = await get0xBTCTokenBalance('0xB6eD7644C69416d67B522e20bC294A9a9B405B31');
+                    await sleep(2);
+                    usersGUILD0xBTCamount = await get0xBTCGuildBalance(minersguildbalance);
+                    await sleep(2);
+
+    } catch (error) {
+        console.error('Error executing approveAndCall:', error);
+        alert('Transaction failed: ' + error.message);
+    }
+}
+
+
+
+
+
+
+async function unstakeTokens() {
+            try {
+                if (!window.ethereum) {
+                    alert('MetaMask is not installed. Please install it first.');
+                    return;
+                }
+                var testing123123213= tokenInput2.value;
+                
+                // Contract address and ABI
+                const contractAddress2 = "0x167152A46E8616D4a6892A6AfD8E52F060151C70";
+                const abi = [
+                    "function unstakeCurrency(uint256 reserveTokenAmount, address currencyToClaim) public returns (bool)"
+                ];
+                
+                const reserveTokenAmount = ethers.utils.parseUnits(testing123123213, 8); // Example: 50 tokens (adjust decimals)
+                console.log("testing: ", reserveTokenAmount);
+                const currencyToClaim = "0xB6eD7644C69416d67B522e20bC294A9a9B405B31"; // Adjust currency address
+                
+                // Create contract instance
+                const contract = new ethers.Contract(contractAddress2, abi, signer);
+
+                // Call the unstakeCurrency function
+                const tx = await contract.unstakeCurrency(reserveTokenAmount, currencyToClaim);
+                
+                console.log('Transaction sent:', tx.hash);
+                await tx.wait();
+                console.log('Transaction confirmed:', tx.hash);
+                alert('Tokens unstaked successfully!');
+                await sleep(2);
+                    minersguildbalance = await getTokenBalance(contractAddress);
+                    await sleep(2);
+                    users0xBTCamount = await get0xBTCTokenBalance('0xB6eD7644C69416d67B522e20bC294A9a9B405B31');
+                    await sleep(2);
+                    usersGUILD0xBTCamount = await get0xBTCGuildBalance(minersguildbalance);
+                    await sleep(2);
+            } catch (error) {
+                console.error('Error executing unstakeCurrency:', error);
+                alert('Transaction failed: ' + error.message);
+            }
+        }
+
+
+// Handle account change
+async function handleAccountChange(accounts) {
+    userAddress = accounts[0];
+    if (userAddress) {
+        accountAddressElement.textContent = `Connected Account: ${userAddress}`;
+        await sleep(2);
+        minersguildbalance = await getTokenBalance(contractAddress);
+        await sleep(2);
+        users0xBTCamount = await get0xBTCTokenBalance('0xB6eD7644C69416d67B522e20bC294A9a9B405B31');
+        await sleep(2);
+        usersGUILD0xBTCamount = await get0xBTCGuildBalance(minersguildbalance);
+        await sleep(2);
+    } else {
+        accountAddressElement.textContent = 'No account connected';
+        tokenBalanceElement.textContent = '';
+    }
+}
+
+
+
+// Get token balance
+async function getTokenBalance(tokenAddress) {
+    try {
+        // Create token contract instance
+        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider);
+        
+        // Get balance and decimals
+        const balance = await tokenContract.balanceOf(userAddress);
+        
+        // Format balance with decimals
+        const formattedBalance = ethers.utils.formatUnits(balance, 8);
+        
+        // Display the balance
+        tokenBalanceElement.textContent = `${formattedBalance}`;
+        
+        return balance;
+    } catch (error) {
+        console.error('Error getting token balance:', error);
+        tokenBalanceElement.textContent = 'Error fetching token balance';
+        return null;
+    }
+}
+
+
+
+
+// Get token balance
+async function get0xBTCTokenBalance(tokenAddress) {
+    try {
+        // Create token contract instance
+        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider);
+        
+        // Get balance and decimals
+        const balance = await tokenContract.balanceOf(userAddress);
+        
+        // Format balance with decimals
+        const formattedBalance = ethers.utils.formatUnits(balance, 8);
+        
+        // Display the balance
+        Usersz0xBTCtokenBalance.textContent = `${formattedBalance}`;
+        
+        return balance;
+    } catch (error) {
+        console.error('Error getting token balance:', error);
+        Usersz0xBTCtokenBalance.textContent = 'Error fetching users 0xbtc balance';
+        return null;
+    }
+}
+async function get0xBTCGuildBalance(minersguildbalance){
+
+    try {
+    const abi = [
+                    "function balanceOf(address owner) view returns (uint256)",
+
+                    "function _vaultOutputAmount(uint256 reserveTokenAmount, address currencyToClaim) public view returns (uint)" // _vaultOutputAmount function
+                    ];
+
+                    const contractGuildFinal = new ethers.Contract("0x167152A46E8616D4a6892A6AfD8E52F060151C70", abi, provider);
+                    const contractGuild = new ethers.Contract("0x657223e3FDF539d92c40664Db340097D5D6Bd9f5", abi, provider);
+
+                    var userBalance0xBTC = await contractGuildFinal._vaultOutputAmount(minersguildbalance, "0xB6eD7644C69416d67B522e20bC294A9a9B405B31");
+                    console.log("USERS 0xBTC Balance = ", userBalance0xBTC);
+
+        // Format balance with decimals
+        const formattedBalance0xBTC = ethers.utils.formatUnits(userBalance0xBTC, 8);
+        
+        // Display the balance
+        z0xBTCtokenBalance.textContent = `${formattedBalance0xBTC}`;
+        
+        return userBalance0xBTC;
+    } catch (error) {
+        console.error('Error getting 0xBTC balance:', error);
+        z0xBTCtokenBalance.textContent = 'Error fetching 0xBTC balance';
+        return null;
+    }
+
+}
+
+// Add event listener to connect button
+connectButton.addEventListener('click', connectToMetaMask);
+// Add event listener to connect button
+// Check if MetaMask is already connected
+if (window.ethereum && window.ethereum.selectedAddress) {
+    connectToMetaMask();
+}
+
+
+
+// Add event listener to connect button
+connectButton2.addEventListener('click', connectToMetaMask);
+// Add event listener to connect button
+// Check if MetaMask is already connected
+if (window.ethereum && window.ethereum.selectedAddress) {
+    connectToMetaMask();
+}
+
+
+
+
+        async function loadDataFromURL(savedDataLatestBlock) {
+            const fileUrl = backupUrl.value.trim();
+
+            try {
+                const timestamp = new Date().getTime();
+                const fileUrlWithCacheBust = `${fileUrl}?t=${timestamp}`;
+                const response = await fetch(fileUrlWithCacheBust);
+
+
+                
+                // Check if the response is successful
+                if (!response.ok) {
+                   alert('Failed to load file from backupURL.');
+                   return;
+                }
+
+                // Parse the JSON content from the file
+                const data = await response.json();
+                
+                // Access the parsed data
+                console.log('Loaded data2:', data);
+
+                // Now you can use the data, for example:
+                const lastBlkTo22 = data.lastBlkTo;
+                const holders = data.holders;
+
+
+                // Convert the loaded data back to a Map
+
+                if(lastBlkTo22 > savedDataLatestBlock){
+                    console.log("lastBlkTo is larger than savedDataLastBlock so use the github data");
+
+                    nonZeroHolders = new Map(Object.entries(data.holders));
+                    lastBlkTo = data.lastBlkTo;
+                }else{
+                    console.log("lastBlkTo is smaller than savedDataLastBlock so use the webpage data");
+                }
+
+            } catch (error) {
+                console.error('Error loading data:', error);
+            }
+        }
+
+
+
+
+
+        window.onload = function() {
+            const savedRpcUrl = localStorage.getItem('rpcUrl_guild');
+            const savedBackupUrl = localStorage.getItem('backupUrl_guild');
+            
+            if (savedRpcUrl) {
+                document.getElementById("rpcUrl").value = savedRpcUrl;
+            }
+
+            if (savedBackupUrl) {
+                document.getElementById("backupUrl").value = savedBackupUrl;
+            }
+        }
+
+
+
+
+        async function saveDataToComputer(){
+            console.log("Saving to Computer block: ", lastBlkTo);
+            console.log("Saving users to Computer : ", recipients );
+            
+
+            
+        }
+        // Call the function when page loads
+        //getAllLogs(12244573, 21498024);
+        loadDataFromWebsite();
+        
+    </script>
+</body>
+</html>
