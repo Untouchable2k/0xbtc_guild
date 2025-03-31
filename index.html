@@ -776,6 +776,13 @@ async function connectToMetaMask() {
             return;
         }
 
+        // Request network switch to Ethereum Mainnet (chain ID 1)
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x1' }] // Chain ID for Ethereum Mainnet
+        });
+
+        
         // Request account access
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         userAddress = accounts[0];
@@ -840,12 +847,19 @@ async function approveAndCall() {
             return;
         }
         var testing112vvf= tokenInput.value;
+        if(testing112vvf == ""){
+            testing112vvf="0.0";
+        }
         // Contract address and ABI
         const contractAddress2 = "0xB6eD7644C69416d67B522e20bC294A9a9B405B31";
         const abi = [
             "function approveAndCall(address spender, uint256 tokens, bytes data) public returns (bool success)"
         ];
         const reserveTokenAmount = ethers.utils.parseUnits(testing112vvf, 8); // Example: 50 tokens (adjust decimals)
+        if(reserveTokenAmount.gt(users0xBTCamount)){
+            alert("Deposit Amount Greater than balance of 0xBitcoin. Try lowering deposit amount");
+        }
+
         spender = "0x167152A46E8616D4a6892A6AfD8E52F060151C70";
         // Create contract instance
         const contract = new ethers.Contract(contractAddress2, abi, signer);
@@ -884,14 +898,22 @@ async function unstakeTokens() {
                     return;
                 }
                 var testing123123213= tokenInput2.value;
-                
+
+                if(testing123123213 == ""){
+                    testing123123213="0.0";
+                }
+                const reserveTokenAmount = ethers.utils.parseUnits(testing123123213, 8); // Example: 50 tokens (adjust decimals)
+
+                if(reserveTokenAmount.gt(minersguildbalance)){
+                    alert("Withdraw Amount Greater than balance of MinersGuild Tokens. Try lowering withdraw amount");
+                }
+
                 // Contract address and ABI
                 const contractAddress2 = "0x167152A46E8616D4a6892A6AfD8E52F060151C70";
                 const abi = [
                     "function unstakeCurrency(uint256 reserveTokenAmount, address currencyToClaim) public returns (bool)"
                 ];
                 
-                const reserveTokenAmount = ethers.utils.parseUnits(testing123123213, 8); // Example: 50 tokens (adjust decimals)
                 console.log("testing: ", reserveTokenAmount);
                 const currencyToClaim = "0xB6eD7644C69416d67B522e20bC294A9a9B405B31"; // Adjust currency address
                 
