@@ -271,7 +271,7 @@ Deposit 0xBTC into MinersGuild, Approve and Deposit Txs
 
       <br></br>
   <button class="connectButton" id="connectButton2">Connect to MetaMask or Refresh Stats</button>
-  v1.1
+  
   </div>
 
 
@@ -788,52 +788,42 @@ let users0xBTCamount;
 let usersGUILD0xBTCamount;
 let minersguildbalance;
 // Connect to MetaMask
-
-
-	    async function connectToMetaMask() {
+async function connectToMetaMask() {
     try {
         // Check if MetaMask is installed
         if (typeof window.ethereum === 'undefined') {
             alert('MetaMask is not installed. Please install MetaMask to use this feature.');
             return;
         }
+
+        // Request network switch to Ethereum Mainnet (chain ID 1)
+        await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: '0x1' }] // Chain ID for Ethereum Mainnet
+        });
+
         
-        // First request account access without forcing network switch
+        // Request account access
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         userAddress = accounts[0];
 
-        // Update the UI immediately to show connection
+        // Update the content of the element
         accountAddressElement2.innerHTML = `
         <strong>Connected Account:</strong><br>
         ${userAddress || "User Account Not Connected"}
         `;
 
-        // Create provider after successful connection
+        // Create ethers provider and signer
         provider_user = new ethers.providers.Web3Provider(window.ethereum);
         signer = provider_user.getSigner();
-        
-        // Then try to switch networks if needed
-        try {
-            await window.ethereum.request({
-                method: 'wallet_switchEthereumChain',
-                params: [{ chainId: '0x1' }]
-            });
-        } catch (switchError) {
-            console.log('Network switch error:', switchError);
-            // Continue anyway - user might have rejected the switch
-        }
 
-        // Add delays between balance checks to prevent rate limiting
-        try {
-            minersguildbalance = await getTokenBalance(contractAddress);
-            await sleep(500);
-            users0xBTCamount = await get0xBTCTokenBalance('0xB6eD7644C69416d67B522e20bC294A9a9B405B31');
-            await sleep(500);
-            usersGUILD0xBTCamount = await get0xBTCGuildBalance(minersguildbalance);
-        } catch (balanceError) {
-            console.error('Error getting balances:', balanceError);
-            // Continue anyway - connection is established
-        }
+        // Get token balance after connecting
+        minersguildbalance = await getTokenBalance(contractAddress);
+        await sleep(2);
+        users0xBTCamount = await get0xBTCTokenBalance('0xB6eD7644C69416d67B522e20bC294A9a9B405B31');
+        await sleep(2);
+        usersGUILD0xBTCamount = await get0xBTCGuildBalance(minersguildbalance);
+        await sleep(2);
 
         // Listen for account changes
         window.ethereum.on('accountsChanged', handleAccountChange);
@@ -843,7 +833,7 @@ let minersguildbalance;
     }
 }
 
-	    
+
 deposit0xBTCButton.addEventListener('click', approveAndCall);
 
 
@@ -1185,7 +1175,7 @@ async function handleAccountChange(accounts) {
 async function getTokenBalance(tokenAddress) {
     try {
         // Create token contract instance
-        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider);
+        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider_user);
         
         // Get balance and decimals
         const balance = await tokenContract.balanceOf(userAddress);
@@ -1211,7 +1201,7 @@ async function getTokenBalance(tokenAddress) {
 async function get0xBTCTokenBalance(tokenAddress) {
     try {
         // Create token contract instance
-        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider);
+        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider_user);
         
         // Get balance and decimals
         const balance = await tokenContract.balanceOf(userAddress);
@@ -1238,8 +1228,7 @@ async function get0xBTCGuildBalance(minersguildbalance){
                     "function _vaultOutputAmount(uint256 reserveTokenAmount, address currencyToClaim) public view returns (uint)" // _vaultOutputAmount function
                     ];
 
-                    const contractGuildFinal = new ethers.Contract("0x167152A46E8616D4a6892A6AfD8E52F060151C70", abi, provider);
-                    const contractGuild = new ethers.Contract("0x657223e3FDF539d92c40664Db340097D5D6Bd9f5", abi, provider);
+                    const contractGuildFinal = new ethers.Contract("0x167152A46E8616D4a6892A6AfD8E52F060151C70", abi, provider_user);
 
                     var userBalance0xBTC = await contractGuildFinal._vaultOutputAmount(minersguildbalance, "0xB6eD7644C69416d67B522e20bC294A9a9B405B31");
                     console.log("USERS 0xBTC Balance = ", userBalance0xBTC);
