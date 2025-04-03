@@ -788,42 +788,52 @@ let users0xBTCamount;
 let usersGUILD0xBTCamount;
 let minersguildbalance;
 // Connect to MetaMask
-async function connectToMetaMask() {
+
+
+	    async function connectToMetaMask() {
     try {
         // Check if MetaMask is installed
         if (typeof window.ethereum === 'undefined') {
             alert('MetaMask is not installed. Please install MetaMask to use this feature.');
             return;
         }
-
-        // Request network switch to Ethereum Mainnet (chain ID 1)
-        await window.ethereum.request({
-            method: 'wallet_switchEthereumChain',
-            params: [{ chainId: '0x1' }] // Chain ID for Ethereum Mainnet
-        });
-
         
-        // Request account access
+        // First request account access without forcing network switch
         const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         userAddress = accounts[0];
 
-        // Update the content of the element
+        // Update the UI immediately to show connection
         accountAddressElement2.innerHTML = `
         <strong>Connected Account:</strong><br>
         ${userAddress || "User Account Not Connected"}
         `;
 
-        // Create ethers provider and signer
+        // Create provider after successful connection
         provider_user = new ethers.providers.Web3Provider(window.ethereum);
         signer = provider_user.getSigner();
+        
+        // Then try to switch networks if needed
+        try {
+            await window.ethereum.request({
+                method: 'wallet_switchEthereumChain',
+                params: [{ chainId: '0x1' }]
+            });
+        } catch (switchError) {
+            console.log('Network switch error:', switchError);
+            // Continue anyway - user might have rejected the switch
+        }
 
-        // Get token balance after connecting
-        minersguildbalance = await getTokenBalance(contractAddress);
-        await sleep(2);
-        users0xBTCamount = await get0xBTCTokenBalance('0xB6eD7644C69416d67B522e20bC294A9a9B405B31');
-        await sleep(2);
-        usersGUILD0xBTCamount = await get0xBTCGuildBalance(minersguildbalance);
-        await sleep(2);
+        // Add delays between balance checks to prevent rate limiting
+        try {
+            minersguildbalance = await getTokenBalance(contractAddress);
+            await sleep(500);
+            users0xBTCamount = await get0xBTCTokenBalance('0xB6eD7644C69416d67B522e20bC294A9a9B405B31');
+            await sleep(500);
+            usersGUILD0xBTCamount = await get0xBTCGuildBalance(minersguildbalance);
+        } catch (balanceError) {
+            console.error('Error getting balances:', balanceError);
+            // Continue anyway - connection is established
+        }
 
         // Listen for account changes
         window.ethereum.on('accountsChanged', handleAccountChange);
@@ -832,6 +842,8 @@ async function connectToMetaMask() {
         alert('Failed to connect to MetaMask: ' + error.message);
     }
 }
+
+	    
 deposit0xBTCButton.addEventListener('click', approveAndCall);
 
 
