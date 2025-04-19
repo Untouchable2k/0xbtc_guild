@@ -418,7 +418,7 @@ const LoadingInfoElement = document.getElementById('LoadingInfo');
             while (true && interuptererer == 100) {
                 
                 //accountAddressElement2.innerHTML = `1% Loaded to get Current Guild Holders`;
-                var percentage = 1.0*(endBlk2 - realStart) / (realEnd - realStart) / 100
+                var percentage = 1.0*(endBlk2 - realStart) / (realEnd - realStart) 
                 LoadingInfoElement.innerHTML = `${percentage}% Loaded to get Current Guild Holders`;
                 if(startBlk2 - endBlk > 0){
                     break;
