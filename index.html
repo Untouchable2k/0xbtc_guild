@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MinerseGuild Holders</title>
+    <title>0xBitcoin MinersGuild Holders</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <style>
         body {
@@ -148,8 +148,8 @@
       </style>
 </head>
 <body>
-    <h2>MinerseGuild Holders</h2>
-    <h2><div class="LoadingInfo" id="LoadingInfo">0% Loaded to get Current MinerseGuild Holders</div></h2>
+    <h2>0xBitcoin MinersGuild Holders</h2>
+    <h2><div class="LoadingInfo" id="LoadingInfo">0% Loaded to get current 0xbitcoin MinersGuild Holders</div></h2>
     <!-- Added a table to display the Map values -->
     <div id="holdersTable">
         <table border="1">
@@ -228,7 +228,7 @@
       <button class="max-button" id="max-button">MAX</button>
   </div>
 
-The ApproveAndCall function is considered riskier than the normal Approve and then Deposit transactions but sometimes cheaper if only doing 1 transaction to the MinersGuild.   With everything we suggest checking transaction data to make sure it matches your expectations!
+
   <button 
   id="deposit0xBTCButton"
   style="
@@ -246,29 +246,9 @@ The ApproveAndCall function is considered riskier than the normal Approve and th
   onmouseover="this.style.backgroundColor='#FF7000'"
   onmouseout="this.style.backgroundColor='#FF8C00'"
 >
-  Deposit 0xBTC into MinersGuild, ApproveAndCall Tx
-</button><br>OR</br>
-<button 
-onclick="approveTokens()"
-id="deposit20xBTCButton"
-style="
-    background-color: #FF8C00; 
-    color: white; 
-    padding: 15px 30px; 
-    font-size: 18px; 
-    border: none; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
-"
-onmouseover="this.style.backgroundColor='#FF7000'"
-onmouseout="this.style.backgroundColor='#FF8C00'"
->
-Deposit 0xBTC into MinersGuild, Approve and Deposit Txs
+  Deposit 0xBTC into MinersGuild
 </button>
-v2.2
+
       <br></br>
   <button class="connectButton" id="connectButton2">Connect to MetaMask or Refresh Stats</button>
   
@@ -290,7 +270,7 @@ v2.2
         <div>
             <label for="backupUrl">Enter Backup Data URL:</label>
             <textarea id="backupUrl" name="backupUrl" rows="4" cols="80" placeholder="https://example.com/backup">
-                https://raw.githubusercontent.com/Untouchable2k/0xbtc_guild/main/data/0xbtc_guild_website_imported_data.txt
+                https://raw.githubusercontent.com/Untouchable2k/0xBTC_Guild_Web/main/data/0xbtc_guild_website_imported_data.txt
             </textarea>
         </div>
         <button type="button"  onclick="myOnClickFunction()">Submit</button>
@@ -315,7 +295,7 @@ v2.2
 
         lastBlkTo = 12245663;
         interuptererer = 100;
-        backupUrlValue22 = "https://raw.githubusercontent.com/Untouchable2k/0xbtc_guild/main/data/0xbtc_guild_website_imported_data.txt";
+        backupUrlValue22 = "https://raw.githubusercontent.com/Untouchable2k/0xBTC_Guild_Web/main/data/0xbtc_guild_website_imported_data.txt";
         async function myOnClickFunction() {
             // Your custom JavaScript code here
             if(rpcUrl.value != providerURL){
@@ -329,7 +309,7 @@ v2.2
             
             const backupUrlValue = document.getElementById("backupUrl").value.trim();
             console.log("Testing: ", backupUrlValue);
-            if(backupUrlValue !== "https://raw.githubusercontent.com/Untouchable2k/0xbtc_guild/main/data/0xbtc_guild_website_imported_data.txt" || backupUrlValue22 !== backupUrlValue){
+            if(backupUrlValue !== "https://raw.githubusercontent.com/Untouchable2k/0xBTC_Guild_Web/main/data/0xbtc_guild_website_imported_data.txt" || backupUrlValue22 !== backupUrlValue){
                 interuptererer = 99;
                 backupUrlValue22 = backupUrlValue;
 
@@ -410,20 +390,22 @@ const LoadingInfoElement = document.getElementById('LoadingInfo');
             backupUrlValue22 = rpcUrl.value;
             provider = new ethers.providers.JsonRpcProvider(rpcUrl.value);
             endBlk = await provider.getBlockNumber();
-            endBlk2 = startBlk + 9999;
+            endBlk2 = startBlk + 999;
             startBlk2 = startBlk;
             var realStart = startBlk2;
             var realEnd = endBlk;
             runs = 0;
             while (true && interuptererer == 100) {
                 
-                //accountAddressElement2.innerHTML = `1% Loaded to get Current Guild Holders`;
-                var percentage = 1.0*(endBlk2 - realStart) / (realEnd - realStart) 
-                LoadingInfoElement.innerHTML = `${percentage}% Loaded to get Current Guild Holders`;
+                //accountAddressElement2.innerHTML = `1% loaded to get current 0xBitcoin MinersGuild holders`;
                 if(startBlk2 - endBlk > 0){
                     break;
                     
                 }   
+		    if(runs > 1){
+                var percentage = 1.0*(endBlk2 - realStart) / (realEnd - realStart) * 100
+                LoadingInfoElement.innerHTML = `${percentage.toFixed(2)}% of logs loaded.`;
+		    }
                 if(endBlk2 > endBlk){
                     endBlk2 = endBlk;
                 }
@@ -432,7 +414,7 @@ const LoadingInfoElement = document.getElementById('LoadingInfo');
                 await getTransferLogs(startBlk2, endBlk2);
                 await sleep(2);
                 startBlk2 = endBlk2 + 1;
-                endBlk2 = startBlk2 + 9999;
+                endBlk2 = startBlk2 + 999;
                 if(runs%20==0){
                     console.log("20th run checking and saving");
                     await checkAllReceiptsForBalance();
@@ -443,13 +425,13 @@ const LoadingInfoElement = document.getElementById('LoadingInfo');
                 runs = runs + 1;
             }
 
-            LoadingInfoElement.innerHTML = `100% Loaded to get Current Guild Holders, double checking balances now`;
+            LoadingInfoElement.innerHTML = `100% Logs loaded! 0% of double checking balances done.`;
             await checkAllReceiptsForBalance();
             console.log("Checking everything balance");
             await checkEverythingsLeft_Balance();
             console.log("checked everythign balance!");
             await saveDataToWebsite();
-            LoadingInfoElement.innerHTML = `100% Loaded to get Current Guild Holders, all data current`;
+            LoadingInfoElement.innerHTML = `100% loaded of all logs and checks, all data current`;
 
             const downloadButton = document.getElementById('downloadButton');
             downloadButton.disabled = false; // Enable the button
@@ -511,11 +493,11 @@ const LoadingInfoElement = document.getElementById('LoadingInfo');
                     
                     while (retries <= maxRetries) {
                         try {
-                            await sleep(retries === 0 ? 2 : 90); // Sleep 2ms first try, 90s on retry
+                            await sleep(retries === 0 ? 1 : 40); // Sleep 2ms first try, 90s on retry
                             const userBalance = await contractGuild.balanceOf(recipient);
                             
                             if (userBalance.gt(0)) {
-                                await sleep(3);
+                                await sleep(1);
                                 var userBalance0xBTC = await contractGuildFinal._vaultOutputAmount(userBalance, "0xB6eD7644C69416d67B522e20bC294A9a9B405B31");
                     
                                
@@ -536,7 +518,7 @@ const LoadingInfoElement = document.getElementById('LoadingInfo');
                                 console.error(`Failed after ${maxRetries + 1} attempts`);
                                 break;
                             }
-                            console.log("Sleep 90 seconds trying again");
+                            console.log("Sleep 40 seconds trying again");
                             retries++;
                         }
                     }
@@ -570,8 +552,12 @@ const LoadingInfoElement = document.getElementById('LoadingInfo');
                         console.log('Address:', address);
                         console.log('Data:', data);
                     }
-
+	   	    var zmaxL = nonZeroHolders.size;
+		    var zcurrent = 0;
                     for (const [recipient, data] of nonZeroHolders) {
+			zcurrent=zcurrent+1;
+               		var percentage = 1.0*(zcurrent - 0) / (zmaxL - 0) * 100
+            		LoadingInfoElement.innerHTML = `100% Logs loaded! ${percentage.toFixed(2)}% of double checking balances at current block height.`;
                     if(interuptererer != 100){
                         break;
                     }
@@ -580,7 +566,7 @@ const LoadingInfoElement = document.getElementById('LoadingInfo');
                     
                     while (retries <= maxRetries) {
                         try {
-                            await sleep(2); // Sleep 2ms first try, 90s on retry
+                            await sleep(1); // Sleep 2ms first try, 90s on retry
                             if(retries != 0){
                                 for(var zzz = 0; zzz<45; zzz++){
                                     if(interuptererer == 99){
@@ -592,7 +578,7 @@ const LoadingInfoElement = document.getElementById('LoadingInfo');
                             const userBalance = await contractGuild.balanceOf(recipient);
                             console.log("Final check of User: ",recipient, " and MinersGuildBalance of: ",ethers.utils.formatUnits(userBalance, 8) )
                             if (userBalance.gt(0)) {
-                                await sleep(3);
+                                await sleep(1);
                                 var userBalance0xBTC = await contractGuildFinal._vaultOutputAmount(userBalance, "0xB6eD7644C69416d67B522e20bC294A9a9B405B31");
                     
                                 console.log("2Final check of User: ",recipient, " and 0xBitcoin Balance of: ",ethers.utils.formatUnits(userBalance0xBTC, 8) )
@@ -782,7 +768,7 @@ const Usersz0xBTCtokenBalance = document.getElementById('Users0xBTCtokenBalance'
 // State variables
 let provider_user;
 let signer;
-let userAddress ="0x0";
+let userAddress;
 
 let users0xBTCamount;
 let usersGUILD0xBTCamount;
@@ -832,8 +818,6 @@ async function connectToMetaMask() {
         alert('Failed to connect to MetaMask: ' + error.message);
     }
 }
-
-
 deposit0xBTCButton.addEventListener('click', approveAndCall);
 
 
@@ -862,190 +846,7 @@ const maxButtonUsersGUILD = document.getElementById('max-button-usersGuild');
                 tokenInput2.value = formattedBalance;
         });
 
-let allowance0xBTConMinersGuild = ethers.utils.parseUnits("0", 8);
-async function getAllowance() {
-    try {
-        // Check if MetaMask is installed
-        if (!window.ethereum) {
-            alert('MetaMask is not installed. Please install it first.');
-            return 0;
-        }
-        
-        // Token contract address (the token you're approving)
-        const tokenContractAddress = "0xB6eD7644C69416d67B522e20bC294A9a9B405B31";
-        
-        // Spender contract address (the contract you're approving to spend your tokens)
-        const spenderContractAddress = "0x167152A46E8616D4a6892A6AfD8E52F060151C70";
-        
-        // Token contract ABI (only the allowance function needed)
-        const tokenAbi = [
-            "function allowance(address owner, address spender) view returns (uint256)"
-        ];
-        
-        // Get the user's address
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const userAddress = accounts[0];
-        
-        // Create contract instance
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const tokenContract = new ethers.Contract(tokenContractAddress, tokenAbi, provider);
-        
-        // Call the allowance function to get the approved amount
-        const allowanceAmount = await tokenContract.allowance(userAddress, spenderContractAddress);
-        allowance0xBTConMinersGuild = allowanceAmount;
-        // Convert to a more readable format (adjust decimals based on your token)
-        const formattedAllowance = ethers.utils.formatUnits(allowanceAmount, 8); // Using 8 decimals for 0xBTC
-        
-        console.log(`Current approved amount: ${formattedAllowance} 0xBTC`);
-        
-        // You can update UI elements here
-        // For example:
-        // document.getElementById('currentAllowance').textContent = `${formatt
-        return allowanceAmount; // Returns the BigNumber for programmatic use
-        
-    } catch (error) {
-        console.error('Error getting allowance:', error);
-        alert('Failed to get allowance: ' + (error.message || 'Unknown error'));
-        return 0;
-    }
-}
-
-
-async function approveTokens() {
-    if (userAddress == "0x0") {
-        alert("Click blue button that says 'Connect To Metamask', metamask not connected");   
-        return;
-    }
-
-
-    await getAllowance();
-    await sleep(1);
-    try {
-        if (!window.ethereum) {
-            alert('MetaMask is not installed. Please install it first.');
-            return;
-        }
-        
-        var testing112vvf = tokenInput.value;
-        if (testing112vvf == "") {
-            testing112vvf = "0.0";
-        }
-        
-        let zerozerozero = ethers.utils.parseUnits("0", 8);  
-        // Contract address and ABI
-        const contractAddress2 = "0xB6eD7644C69416d67B522e20bC294A9a9B405B31";
-        const abi = [
-            "function approve(address spender, uint256 amount) public returns (bool)"
-        ];
-        
-        const tokenAmount = ethers.utils.parseUnits(testing112vvf, 8); // Adjust decimals as needed
-        console.log("TokenAmount: ",tokenAmount.toString() );
-        console.log("TokenAmount allowance0xBTConMinersGuild: ",allowance0xBTConMinersGuild.toString() );
-        if (tokenAmount.gt(users0xBTCamount) ) {
-            alert("Approval Amount Greater than balance of 0xBitcoin. Try lowering amount");
-            return;
-        }
-        if(tokenAmount.lt(allowance0xBTConMinersGuild) || tokenAmount.eq(allowance0xBTConMinersGuild)){
-            if(tokenAmount.eq(zerozerozero)){
-                alert("Sending zero 0xBTC deposit, will deposit 0.")
-            }
-        }else{
-            const spender = "0x167152A46E8616D4a6892A6AfD8E52F060151C70";
-            
-            // Create contract instance
-            const contract = new ethers.Contract(contractAddress2, abi, signer);
-
-            // Call the approve function
-            const tx = await contract.approve(spender, tokenAmount);
-            
-            console.log('Approval transaction sent:', tx.hash);
-            await tx.wait();
-            console.log('Approval transaction confirmed:', tx.hash);
-            alert('Approved 0xBTC for MinerseGuild, now calling Function Deposit');
-
-        }
-        await depositTokens();
-        await sleep(2);
-        minersguildbalance = await getTokenBalance(contractAddress);
-        await sleep(2);
-        users0xBTCamount = await get0xBTCTokenBalance('0xB6eD7644C69416d67B522e20bC294A9a9B405B31');
-        await sleep(2);
-        usersGUILD0xBTCamount = await get0xBTCGuildBalance(minersguildbalance);
-        await sleep(2);
-
-    } catch (error) {
-        console.error('Error executing approve:', error);
-        alert('Approval transaction failed: ' + error.message);
-    }
-}
-
-
-
-async function depositTokens(){
-    if (userAddress == "0x0") {
-        alert("Click blue button that says 'Connect To Metamask', metamask not connected");   
-        return;
-    }
-
-    try {
-    
-        // Check if MetaMask is installed
-        if (!window.ethereum) {
-            alert('MetaMask is not installed. Please install it first.');
-            return;
-        }
-        
-        var testing112vvf = tokenInput.value;
-        if (testing112vvf == "") {
-            testing112vvf = "0.0";
-        }
-        
-        // Contract address and ABI
-        const contractAddress2 = "0xB6eD7644C69416d67B522e20bC294A9a9B405B31";
-        
-        const tokenAmount = ethers.utils.parseUnits(testing112vvf, 8); // Adjust decimals as needed
-        
-        
-        // Contract details
-        const contractAddress = "0x167152A46E8616D4a6892A6AfD8E52F060151C70"; // Replace with your actual contract address
-        const abi = [
-            "function stakeCurrency(address from, uint256 currencyAmount) public returns (bool)"
-        ];
-        
-        // Get the user's address
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const userAddress = accounts[0];
-        
-        // Create contract instance
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(contractAddress, abi, signer);
-        
-        // Call the stakeCurrency function
-        const tx = await contract.stakeCurrency(userAddress, tokenAmount);
-        
-        console.log('Staking transaction sent:', tx.hash);
-        alert('Deposit transaction submitted. Please wait for confirmation...');
-        
-        // Wait for the transaction to be mined
-        await tx.wait();
-        
-        console.log('Deposit transaction confirmed:', tx.hash);
-        alert('Deposit successful! Your currency has been staked.');
-        
-    } catch (error) {
-        console.error('Error executing deposit:', error);
-        alert('Deposit transaction failed: ' + error.message);
-    }
-
-}
-
-async function approveAndCall() {    
-    
-    if (userAddress == "0x0") {
-        alert("Click blue button that says 'Connect To Metamask', metamask not connected");   
-        return;
-    }
+async function approveAndCall() {
     try {
         if (!window.ethereum) {
             alert('MetaMask is not installed. Please install it first.');
@@ -1097,11 +898,6 @@ async function approveAndCall() {
 
 
 async function unstakeTokens() {
-    
-    if (userAddress == "0x0") {
-        alert("Click blue button that says 'Connect To Metamask', metamask not connected");   
-        return;
-    }
             try {
                 if (!window.ethereum) {
                     alert('MetaMask is not installed. Please install it first.');
@@ -1175,7 +971,7 @@ async function handleAccountChange(accounts) {
 async function getTokenBalance(tokenAddress) {
     try {
         // Create token contract instance
-        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider_user);
+        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider);
         
         // Get balance and decimals
         const balance = await tokenContract.balanceOf(userAddress);
@@ -1201,7 +997,7 @@ async function getTokenBalance(tokenAddress) {
 async function get0xBTCTokenBalance(tokenAddress) {
     try {
         // Create token contract instance
-        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider_user);
+        const tokenContract = new ethers.Contract(tokenAddress, tokenABI, provider);
         
         // Get balance and decimals
         const balance = await tokenContract.balanceOf(userAddress);
@@ -1228,7 +1024,8 @@ async function get0xBTCGuildBalance(minersguildbalance){
                     "function _vaultOutputAmount(uint256 reserveTokenAmount, address currencyToClaim) public view returns (uint)" // _vaultOutputAmount function
                     ];
 
-                    const contractGuildFinal = new ethers.Contract("0x167152A46E8616D4a6892A6AfD8E52F060151C70", abi, provider_user);
+                    const contractGuildFinal = new ethers.Contract("0x167152A46E8616D4a6892A6AfD8E52F060151C70", abi, provider);
+                    const contractGuild = new ethers.Contract("0x657223e3FDF539d92c40664Db340097D5D6Bd9f5", abi, provider);
 
                     var userBalance0xBTC = await contractGuildFinal._vaultOutputAmount(minersguildbalance, "0xB6eD7644C69416d67B522e20bC294A9a9B405B31");
                     console.log("USERS 0xBTC Balance = ", userBalance0xBTC);
